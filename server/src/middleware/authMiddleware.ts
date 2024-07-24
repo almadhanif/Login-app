@@ -1,8 +1,7 @@
 import { Request } from 'express';
 
-// Definisikan antarmuka AuthRequest yang memperluas Request
 export interface AuthRequest extends Request {
-  user?: any; // Ubah 'any' menjadi tipe data yang sesuai untuk user Anda
+  user?: any;
 }
 
 // Middleware untuk otentikasi dan menambahkan user ke req.user
@@ -21,10 +20,8 @@ const authMiddleware = (
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
-      userId: string;
-    };
-    req.user = decoded.userId; // Menetapkan userId ke req.user
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    req.user = decoded; // Menetapkan userId ke req.user
     next();
   } catch (err) {
     res.status(401).json({ message: 'Invalid token' });
